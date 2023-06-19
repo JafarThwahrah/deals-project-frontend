@@ -12,6 +12,14 @@ const Login = () => {
     setFormValues({ ...formValues, [event.target.name]: event.target.value });
   };
 
+  function setCookie(name, value, days) {
+    const expires = new Date(
+      Date.now() + days * 24 * 60 * 60 * 1000
+    ).toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(
+      value
+    )}; expires=${expires}; path=/`;
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -19,6 +27,7 @@ const Login = () => {
       if (response.status == 200) {
         // navigate("/profile");
         console.log(response);
+        setCookie("sessionId", `${response.data.sessionId}`, 1);
       }
     } catch (err) {
       console.log(err);
